@@ -1,15 +1,13 @@
+import { MEMOIZED_BOARDS } from "@/config/memoized";
 import { Board, BOARD_SIZE, QUEENS } from "../config/constants";
-import { memoizeAllBoards } from "./memoize_all_boards";
 import { mergeBoards } from "./merge-boards";
 
 export function findSolutions() {
-  const memoizedMoves = memoizeAllBoards();
-
   const solutions: number[][] = [];
   const stack: { queens: number[]; board: Board }[] = [];
 
   for (let i = 0; i < BOARD_SIZE; i++) {
-    let board = new Array(...(memoizedMoves[i] ?? []));
+    let board = new Array(...(MEMOIZED_BOARDS[i] ?? []));
     stack.push({ queens: [i], board });
   }
   stack.reverse();
@@ -40,7 +38,7 @@ export function findSolutions() {
       if (board[column * BOARD_SIZE + i]) continue;
 
       const boardForThisPiece = new Array(
-        ...(memoizedMoves[column * BOARD_SIZE + i] ?? [])
+        ...(MEMOIZED_BOARDS[column * BOARD_SIZE + i] ?? [])
       );
 
       stack.push({

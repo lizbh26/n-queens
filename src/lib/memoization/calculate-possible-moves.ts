@@ -1,4 +1,4 @@
-import { Board, BOARD_SIZE, Coord } from "../config/constants";
+import { Board, BOARD_SIZE, Coord } from "@/config/constants";
 
 export function calculatePossibleMoves({ x: pos_x, y: pos_y }: Coord): Board {
   const board: Board = new Array(BOARD_SIZE * BOARD_SIZE).fill(false);
