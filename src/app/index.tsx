@@ -24,11 +24,11 @@ function App() {
                 id="input-board"
                 type="range"
                 min={1}
-                max={8}
+                max={10}
                 value={boardSize}
                 onChange={(e) => setBoardSize(Number(e.target.value))}
               />
-              <p>8</p>
+              <p>10</p>
             </span>
           </div>
         </div>
@@ -43,9 +43,9 @@ function App() {
             : "no hay soluciones."}
         </p>
         {solutions.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="mx-10 md:mx-16 lg:mx-20 bg-gray-100 border-2 border-gray-200 rounded grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {solutions.map((solution, i) => (
-              <div className="text-center my-2">
+              <div className="text-center my-4">
                 <h2 className="text-xl">Solución {i + 1}</h2>
                 <div
                   key={solution.toString()}
