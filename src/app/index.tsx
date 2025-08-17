@@ -43,12 +43,12 @@ function App() {
         {solutions.length > 0 && (
           <div className="mx-2 grid grid-cols-1 rounded border-2 border-gray-200 bg-gray-100 sm:mx-10 md:mx-16 md:grid-cols-2 lg:mx-20 lg:grid-cols-3">
             {solutions.map((solution, i) => (
-              <div className="my-4 text-center">
+              <div
+                key={`solution-${boardSize}-${i}`}
+                className="my-4 text-center"
+              >
                 <h2 className="text-xl">Solución {i + 1}</h2>
-                <div
-                  key={solution.toString()}
-                  className="flex w-full items-center justify-center leading-0"
-                >
+                <div className="flex w-full items-center justify-center leading-0">
                   <ChessBoard
                     queens={solution}
                     boardSize={boardSize}
