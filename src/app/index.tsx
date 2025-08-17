@@ -4,11 +4,10 @@ import { ChessBoard } from "./components/ChessBoard";
 
 function App() {
   const [boardSize, setBoardSize] = useState(8);
-  const [numberOfQueens, setNumberOfQueens] = useState(8);
 
   const { solutions, memoizedBoards } = useMemo(() => {
-    return findSolutions(boardSize, numberOfQueens);
-  }, [boardSize, numberOfQueens]);
+    return findSolutions(boardSize);
+  }, [boardSize]);
 
   return (
     <main className="my-8">
@@ -32,33 +31,12 @@ function App() {
               <p>8</p>
             </span>
           </div>
-
-          <div className="flex flex-col items-center">
-            <label htmlFor="input-queens">Número de reinas </label>
-            <span className="flex gap-1 items-center mt-4">
-              <p>1</p>
-              <input
-                id="input-queens"
-                type="range"
-                min={1}
-                max={8}
-                value={numberOfQueens}
-                onChange={(e) => setNumberOfQueens(Number(e.target.value))}
-              />
-              <p>8</p>
-            </span>
-          </div>
-        </div>
-        <div className="w-full flex justify-center mt-4">
-          <button className="p-4 rounded-lg border-4 font-bold border-blue-500 hover:bg-blue-500 hover:text-white transition">
-            Calcular
-          </button>
         </div>
       </form>
       <div className="mt-4">
         <p className="text-center mb-8">
-          Para un tablero de {boardSize}x{boardSize} con {numberOfQueens} reina
-          {numberOfQueens !== 1 ? "s" : ""},{" "}
+          Para un tablero de {boardSize}x{boardSize} con {boardSize} reina
+          {boardSize !== 1 ? "s" : ""},{" "}
           {solutions.length !== 0
             ? `hay ${solutions.length}
             soluci${solutions.length === 1 ? "ón" : "ones"}: `

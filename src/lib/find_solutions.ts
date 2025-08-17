@@ -2,7 +2,7 @@ import { Board } from "../config/constants";
 import { mergeBoards } from "./merge-boards";
 import { memoizeAllBoards } from "./memoization/memoize-all-boards";
 
-export function findSolutions(boardSize: number, numberOfQueens: number) {
+export function findSolutions(boardSize: number) {
   const memoizedBoards = memoizeAllBoards(boardSize);
 
   const solutions: number[][] = [];
@@ -15,17 +15,12 @@ export function findSolutions(boardSize: number, numberOfQueens: number) {
   stack.reverse();
 
   while (stack.length > 0) {
-    console.count();
     const state = stack.pop();
     if (!state) continue;
 
     const { queens, board } = state;
 
-    const freeSpaces = findNonThreatenedSpaces(board);
-    if (freeSpaces.length === 0) {
-      if (queens.length < numberOfQueens) continue;
-
-      queens.sort((a, b) => a - b);
+    if (queens.length === boardSize) {
       if (
         !solutions.find((solution) => solution.toString() === queens.toString())
       ) {
@@ -35,29 +30,22 @@ export function findSolutions(boardSize: number, numberOfQueens: number) {
       continue;
     }
 
-    // There can only be one queen per column, so it only checks one column at a time
     const column = queens.length;
-
     for (let i = 0; i < boardSize; i++) {
-      //If square is threatened, skip
-      if (board[column * boardSize + i]) continue;
+      const coord = column * boardSize + i;
+      if (board[coord]) continue;
 
-      const boardForThisPiece = new Array(
-        ...(memoizedBoards[column * boardSize + i] ?? [])
-      );
+      const newQueens = [...queens, coord].sort((a, b) => a - b);
+
+      const boardForThisPiece = new Array(...(memoizedBoards[coord] ?? []));
+      const boardAfterPlacingPiece = mergeBoards(board, boardForThisPiece);
 
       stack.push({
-        queens: [...queens, column * boardSize + i],
-        board: mergeBoards(board, boardForThisPiece),
+        queens: newQueens,
+        board: boardAfterPlacingPiece,
       });
     }
   }
 
   return { solutions, memoizedBoards };
-}
-
-function findNonThreatenedSpaces(board: Board): number[] {
-  const spaces: number[] = [];
-  board.forEach((threatened, i) => !threatened && spaces.push(i));
-  return spaces;
 }
