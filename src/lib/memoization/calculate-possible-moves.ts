@@ -2,7 +2,7 @@ import { Board, Coord } from "@/config/constants";
 
 export function calculatePossibleMoves(
   { x: pos_x, y: pos_y }: Coord,
-  boardSize: number
+  boardSize: number,
 ): Board {
   const board: Board = new Array(boardSize * boardSize).fill(false);
 
