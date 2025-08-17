@@ -8,11 +8,30 @@ on:
 
 jobs: 
   deploy:
+    environment:
+        name: github-pages
+        url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3 # Checkout repo
+      - name: Checkout
+      - uses: actions/checkout@v4 # Checkout repo
+
+      - name: Setup bun
       - uses: oven-sh/setup-bun@v2 # Setup bun
         with:
-            bun-version: latest 
+            bun-version: latest
+
+      - name: Build
       - run: bun install 
-      - run: bun start
+      - run: bun run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
