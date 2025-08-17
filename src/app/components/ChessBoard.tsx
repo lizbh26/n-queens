@@ -1,31 +1,37 @@
 //@ts-ignore
 import queen from "@/img/queen.png";
 
-import { BOARD_SIZE } from "@/config/constants";
+import { Board } from "@/config/constants";
+
 import { useState } from "react";
-import { MEMOIZED_BOARDS } from "@/config/memoized";
 
 export interface ChessBoardParams {
   queens: number[];
+  boardSize: number;
+  memoizedBoards: Board[];
 }
-export function ChessBoard({ queens }: ChessBoardParams) {
+export function ChessBoard({
+  boardSize,
+  queens,
+  memoizedBoards,
+}: ChessBoardParams) {
   const [selectedQueen, setSelectedQueen] = useState<number | null>(null);
 
   const highlightedSquares =
-    selectedQueen !== null ? MEMOIZED_BOARDS[selectedQueen] : [];
+    selectedQueen !== null ? memoizedBoards[selectedQueen] : [];
 
   return (
-    <div>
-      {createIterableBoard().map((row, i) => (
+    <div className="block">
+      {createIterableBoard(boardSize).map((row, i) => (
         <div className=" p-0 m-0">
           {row.map((square, j) => (
             <span
-              className={`inline-block h-8 w-8 ${highlightedSquares[i * BOARD_SIZE + j] ? "bg-blue-500 border-2 border-white" : square === 1 ? "bg-yellow-200 p-px" : "bg-black p-px"}`}
+              className={`inline-block h-8 w-8 ${highlightedSquares[i * boardSize + j] ? "bg-blue-500 border-2 border-white" : square === 1 ? "bg-yellow-200 p-px" : "bg-black p-px"}`}
             >
-              {queens.includes(i * BOARD_SIZE + j) && (
+              {queens.includes(i * boardSize + j) && (
                 <span
                   className="w-full block h-full"
-                  onMouseEnter={() => setSelectedQueen(i * BOARD_SIZE + j)}
+                  onMouseEnter={() => setSelectedQueen(i * boardSize + j)}
                   onMouseLeave={() => setSelectedQueen(null)}
                 >
                   <img src={queen} width={32} height={32} />
@@ -39,12 +45,12 @@ export function ChessBoard({ queens }: ChessBoardParams) {
   );
 }
 
-function createIterableBoard(): number[][] {
+function createIterableBoard(boardSize: number): number[][] {
   let board: number[][] = [];
 
-  for (let i = 0; i < BOARD_SIZE; i++) {
+  for (let i = 0; i < boardSize; i++) {
     board.push([]);
-    for (let j = 0; j < BOARD_SIZE; j++) {
+    for (let j = 0; j < boardSize; j++) {
       const pos = (i % 2) + j;
       board[i].push(pos % 2);
     }
