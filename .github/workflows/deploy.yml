@@ -1,12 +1,19 @@
-on: push
 name: Deploy
+
+on:
+  push:
+    branches:
+      - main 
+  workflow_dispatch: # Execute on manual trigger
+
 jobs:
-  my-job:
-    name: my-job
+  build-and-start:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
-
-      - run: bun install
-      - run: bun run build
+      - uses: actions/checkout@v3 # Checkout repo
+      - uses: oven-sh/setup-bun@v2 # Setup bun
+        with:
+            bun-version: latest 
+      - run: bun install 
+      - run: bun index.ts
+      - run: bun build
